@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  web:
+    container_name: boilerplate-web
+    hostname: web
+    build:
+      dockerfile: ./web.Dockerfile
+      args:
+        UID: ${FIXUID:-1000}
+        GID: ${FIXGID:-1000}
+    cap_add:
+      - SYS_PTRACE
+    command: /bin/bash
+    ports:
+      - "3000:3000"
+      - "1234:1234"
+    volumes:
+      - .:/app
+    tty: true
+    depends_on:
+      - "db"
+    working_dir: /app/src
+  db:
+    container_name: boilerplate-db
+    hostname: db
+    image: biarms/mysql:5.7.30
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    expose:
+      - "3306"
+    volumes:
+      - ./data:/var/lib/mysql
+

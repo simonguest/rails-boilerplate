@@ -1,0 +1,5 @@
+.idea
+data/**
+src/node_modules/**
+src/log/*.log
+src/tmp/**
